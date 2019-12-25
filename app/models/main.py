@@ -91,3 +91,9 @@ class Organization(db.Model):
             'added': self.added,
             'deleted': self.deleted
         }
+
+    def forSelect(key, val):
+        return {
+            'key': key,
+            'value': val
+            }

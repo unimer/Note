@@ -1,6 +1,7 @@
 from app import app
 from app.helpers import str2bool
 from app.models.main import *
+from app.models.lists import Lists
 from flask import json, request
 from flask_login import login_required, current_user
 from app.forms.NoteForm import NoteForm
@@ -84,4 +85,9 @@ def editNote():
         return json.jsonify(note.forAll())
 
 
-    
+# Filter Lists
+@app.route("/note/getOrganization", methods=['GET'])
+def getOrganization():
+    organs = Lists.ListOrganizations()
+    # print(organs, file=sys.stderr)
+    return json.jsonify([Organization.forSelect(key=organKey, val=organValue) for organKey, organValue in organs.items()])
