@@ -19,5 +19,5 @@ auth = HTTPBasicAuth(app)
 messages = {}
 
 from app.models import main
-from app.controller import UserController
+from app.controller import UserController, NoteController
 from app.controller import auth
