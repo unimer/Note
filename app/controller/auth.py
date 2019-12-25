@@ -12,7 +12,6 @@ def login():
     form = UserForm(request.args)
     
     if form.validate():
-        print('This is error output', file=sys.stderr)
         user = User.query.filter_by(username=form.username).first()
         if user is None:
             return json.jsonify(success="false", message="nonExistingUser")
@@ -20,6 +19,7 @@ def login():
             return json.jsonify(success="false", message="wrongPassword")
        
         login_user(user)
+        # print(current_user.get_id(), file=sys.stderr)
         
         return json.jsonify(success="true", message="successfull login")
     return json.jsonify(success="false", message="formDataError")
