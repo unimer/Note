@@ -5,6 +5,8 @@ from flask import json, request
 from flask_login import login_required, current_user
 from app.forms.NoteForm import NoteForm
 from app import messages
+from datetime import datetime
+
 import sys
 
 # CREATE
@@ -58,6 +60,28 @@ def deleteNote():
     note.deleted = delete
     db.session.commit() 
     return json.jsonify(note.forAll()) 
+
+@app.route("/note/edit", methods=['GET', 'POST'])
+def editNote():
+    if request.method == 'GET':
+        noteId = request.args.get('id')
+        note = Note.query.filter(Note.id == noteId).first()
+        return json.jsonify(note.forAll())
+    elif request.method == 'POST':
+        noteId = request.args.get('id')
+        form = NoteForm(request.args)
+
+        if not form.validate():
+            return json.jsonify(errorMessages=messages)
+        note = Note.query.filter(Note.id == noteId).first()
+        note.group = form.group
+        note.title = form.title
+        note.body = form.body
+        note.color = form.color
+        note.changed = datetime.utcnow()
+        
+        db.session.commit()
+        return json.jsonify(note.forAll())
 
 
     

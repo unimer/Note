@@ -4,6 +4,7 @@ from app import db
 from app.models.main import Note
 from app import messages
 
+
 class NoteForm():
 
     title=""
@@ -40,8 +41,8 @@ class NoteForm():
             error = True
             messages['title'] = 'emptyTitle'
 
-        if Note.query.filter(Note.title == title).fitst():
+        if Note.query.filter(Note.title == self.title).first():
             error = True
             messages['title'] = 'duplicateField'
 
-        return not Error
+        return not error
