@@ -1,0 +1,12 @@
+venv
+
+app/__pycache__
+
+migrations/__pycache__
+
+*.pyc
+__pycache__/
+
+dist/
+build/
+
