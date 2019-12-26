@@ -37,12 +37,13 @@ class NoteForm():
     def validate(self):
         error = False
 
-        if self.title == None or self.title == "":
-            error = True
-            messages['title'] = 'emptyTitle'
+        # if self.title == None or self.title == "":
+        #     error = True
+        #     messages['title'] = 'emptyTitle'
 
-        if Note.query.filter(Note.title == self.title).first():
-            error = True
-            messages['title'] = 'duplicateField'
+
+        # if Note.query.filter(Note.title == self.title).first():
+        #     error = True
+        #     messages['title'] = 'duplicateField'
 
         return not error

@@ -1,7 +1,7 @@
 from app import app, login
 from app.models.main import User
 from flask import json, redirect, url_for, request
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, logout_user
 from app.forms.UserForm import UserForm
 import sys
 
@@ -27,4 +27,5 @@ def login():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    return json.jsonify(todo="Logout func")
+    logout_user()
+    return json.jsonify(sucess="true", message="trues")
