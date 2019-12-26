@@ -4,6 +4,8 @@ from flask import json, request
 from flask_login import login_required
 from app.forms.UserForm import UserForm
 from app import messages
+from app import validationJsonErrorResponse
+
 import sys
 
 # READ
@@ -33,8 +35,7 @@ def add():
     elif request.method == 'POST':
         form = UserForm(request.args)
         if not form.validateNew():
-            return json.jsonify(errorMessages=messages)
-        
+            return validationJsonErrorResponse()        
         user = User()
         user.username = form.username
         user.email = form.email
@@ -55,7 +56,8 @@ def edit():
     elif request.method == 'POST':
         form = UserForm(request.args)
         if not form.validate():
-            return json.jsonify(errorMessages=messages)
+            return validationJsonErrorResponse()
+
 
         user = User.query.filter(User.id == form.id).first()
 

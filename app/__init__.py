@@ -18,6 +18,10 @@ auth = HTTPBasicAuth(app)
 
 messages = {}
 
+def validationJsonErrorResponse():
+    return json.jsonify(errorMessages=messages)
+
+
 from app.models import main
 from app.controller import UserController, NoteController
 from app.controller import auth

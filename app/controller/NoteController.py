@@ -1,7 +1,9 @@
 from app import app
+from app import validationJsonErrorResponse
 from app.helpers import str2bool
 from app.models.main import *
 from app.models.lists import Lists
+from app.models.enum import ColorEnum
 from flask import json, request
 from flask_login import login_required, current_user
 from app.forms.NoteForm import NoteForm
@@ -20,7 +22,7 @@ def addNote():
         form = NoteForm(request.args)
         # print(current_user, file=sys.stderr)
         if (not form.validateNew()):
-            return json.jsonify(errorMessages=messages)
+            return validationJsonErrorResponse()
        
         user = User.query.filter(User.id == current_user.get_id()).first()
 
@@ -73,7 +75,7 @@ def editNote():
         form = NoteForm(request.args)
 
         if not form.validate():
-            return json.jsonify(errorMessages=messages)
+            return validationJsonErrorResponse()
         note = Note.query.filter(Note.id == noteId).first()
         note.group = form.group
         note.title = form.title
@@ -88,6 +90,23 @@ def editNote():
 # Filter Lists
 @app.route("/note/getOrganization", methods=['GET'])
 def getOrganization():
-    organs = Lists.ListOrganizations()
+    organs = Lists.listOrganizations()
     # print(organs, file=sys.stderr)
     return json.jsonify([Organization.forSelect(key=organKey, val=organValue) for organKey, organValue in organs.items()])
+
+@app.route("/note/getColors", methods=['GET'])
+def getColors():
+    colors = Lists.getColors()
+    return json.jsonify([ColorEnum.forSelect(key, value) for key, value in colors.items()])
+
+
+# Filter
+@app.route("/note/index", methods=['GET'])
+def noteIndex():
+    username = request.args.get('username')
+    user = User.query.filter(User.username == username).first()
+    if (not user):
+        return json.jsonify(success="false", message="noResultsFound")
+    notes = Note.query.filter(Note.userId == user.id)
+
+    return json.jsonify([note.forAll() for note in notes])
