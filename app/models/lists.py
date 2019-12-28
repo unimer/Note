@@ -7,10 +7,12 @@ class Lists():
 
     def listOrganizations():
         dictionary = {}
+        dictionary[-1] = ""
 
         organization = Organization.query.all()
         for org in organization:
             dictionary[org.id] = org.name
+
         
         return dictionary
 

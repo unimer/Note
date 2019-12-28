@@ -10,4 +10,17 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <span class="border-top"></span>
+        <span class="border border-success"></span>
+        <div class="p-5"></div>
+        
 </head>
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+            </div>
+        </div>  
+    </div>
+</header>
