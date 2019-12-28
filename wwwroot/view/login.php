@@ -4,6 +4,7 @@
         <title>Login</title>
     </head>
     <body>
+        <div w3-include-html="./test.html"></div>
         <form method="post" action="login">
             <input type="text" id="username"><br>
             <input type="password" id="password"><br>
