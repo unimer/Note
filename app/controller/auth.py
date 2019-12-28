@@ -25,8 +25,8 @@ def login():
         login_user(user)
         # print(current_user.get_id(), file=sys.stderr)
         
-        return json.jsonify(success="true", message="successfull login")
-    return json.jsonify(success="false", message="formDataError")
+        return json.jsonify(success=True, message="successfull login")
+    return json.jsonify(success=False, message="formDataError")
 
 
 @app.route('/logout', methods=['POST'])

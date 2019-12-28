@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Login</title>
-    </head>
+<?php require "header.php"; ?>
     <body>
-        <div w3-include-html="./test.html"></div>
+        <div id="errorMessage" style="display:none" class="alert alert-danger alert-dismissible fade show">
+            <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
+        </div>
         <form method="post" action="login">
             <input type="text" id="username"><br>
             <input type="password" id="password"><br>
             <input type="button" value="Log in" id="login">
-
         </form>
         
         
-        <script
-        src="http://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous"></script>
+      
 
         <script type="text/javascript" src="../controller/loginController.js">
         </script>

@@ -1,1 +1,5 @@
-<h1>Hey nokolla</h1>
+<?php require "header.php"; ?>
+    <body>
+    
+        <h1> Babilon </h1>
+    </body>

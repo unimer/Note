@@ -7,6 +7,8 @@ $(document).ready(function () {
 
         var uri = "http://localhost:5000/login"    
 
+        var data = null;
+
         $.ajax({
             type: 'POST',
             url: uri,
@@ -16,10 +18,18 @@ $(document).ready(function () {
                 password: password
             },
             
-            dataType: 'application/json'
-        }).done(() => {
-            console.log("nikola");
+            dataType: 'json',
+            success: (msg, status, xhr) => {
+                data = msg;
+                if (data.success === true) {
+                    window.location.href = './index.php';
+                } else {
+                    $("#errorMessage").show();
+                }
+            },
+            fail: () => {
+                alert("Connection error");
+            }
         });
-        console.log(username, password);
     });
 });
