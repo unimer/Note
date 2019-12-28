@@ -7,6 +7,7 @@ from flask_migrate import Migrate
 from config import Config
 from flask_login import LoginManager
 from flask_httpauth import HTTPBasicAuth
+from flask_cors import CORS
 import sys
 
 app=Flask(__name__)
@@ -15,6 +16,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 auth = HTTPBasicAuth(app)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 messages = {}
 
