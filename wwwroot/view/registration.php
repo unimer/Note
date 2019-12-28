@@ -19,8 +19,8 @@
                     <select class="form-control" placeholder="Organization" id="selOrg">
 
                     </select> <br>
-                    <input type="button" class="btn btn-success" value="Log in" id="login">
-                    <button type="button" class="btn btn-warning" id="registrationBtn">Registration</button>
+                    <input type="button" class=" btn btn-success" value="Log in" id="login">
+                    <button type="button" class="float-right btn btn-warning" id="registrationBtn">Register</button>
 
                 </div>
             </div>

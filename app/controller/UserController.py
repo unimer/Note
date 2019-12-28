@@ -33,7 +33,7 @@ def add():
         user=User()
         return json.jsonify(user.forAll())
     elif request.method == 'POST':
-        form = UserForm(request.args)
+        form = UserForm(request.form)
         if not form.validateNew():
             return validationJsonErrorResponse()        
         user = User()
