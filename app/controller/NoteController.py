@@ -65,7 +65,7 @@ def deleteNote():
     return json.jsonify(note.forAll()) 
 
 @app.route("/note/edit", methods=['GET', 'POST'])
-@login_required
+# @login_required
 def editNote():
     if request.method == 'GET':
         noteId = request.args.get('id')
@@ -73,7 +73,7 @@ def editNote():
         return json.jsonify(note.forAll())
     elif request.method == 'POST':
         noteId = request.args.get('id')
-        form = NoteForm(request.args)
+        form = NoteForm(request.form)
 
         if not form.validate():
             return validationJsonErrorResponse()
@@ -88,6 +88,7 @@ def editNote():
             note.title = form.title
             note.body = form.body
             note.color = form.color
+            note.private = form.private
             note.changed = datetime.utcnow()
             db.session.commit()
             return json.jsonify(note.forAll())

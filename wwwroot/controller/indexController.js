@@ -1,20 +1,22 @@
 
+let noteEditColor = null;
+
 const getColor = (color) => {
     switch(color){
         case 0:
-            return " bg-info";
+            return " bg-info text-white";
             break;
         case 1:
-            return " bg-secondary";
+            return " bg-secondary text-white";
             break;
         case 2: 
-            return " bg-light";
+            return " bg-danger text-white";
             break;
         case 3:
-            return " bg-success";
+            return " bg-success text-white";
             break;
         case 4:
-            return " bg-warning";
+            return " bg-warning ";
             break;
         default:
             return " bg-transparent"; 
@@ -51,7 +53,34 @@ const renderElement = (val) => {
         .dblclick(() => {
             console.log("TODO edit note with id");
             console.log($("#note" + val.id).data("note").id);
+            editNoteGet(val.id);
             $( "#noteEditDialog" ).modal('show');
+
+            $("#warning-color").on('click', () => {
+                $("#modalHeader").removeClass()
+                .addClass("modal-header " + getColor(4));
+                noteEditColor = 4;
+            });
+            $("#info-color").on('click', () => {
+                $("#modalHeader").removeClass()
+                .addClass("modal-header " + getColor(0));
+                noteEditColor = 0;
+            });
+            $("#secondary-color").on('click', () => {
+                $("#modalHeader").removeClass()
+                .addClass("modal-header " + getColor(1));
+                noteEditColor = 1;
+            });
+            $("#success-color").on('click', () => {
+                $("#modalHeader").removeClass()
+                .addClass("modal-header " + getColor(3));
+                noteEditColor = 3;
+            });
+            $("#danger-color").on('click', () => {
+                $("#modalHeader").removeClass()
+                .addClass("modal-header " + getColor(2));
+                noteEditColor = 2;
+            });
         })
         .data("note", {id: val.id});
 
@@ -79,6 +108,34 @@ const loadNotes = () => {
             alert("Connection problem");
         }
     });
+}
+
+const editNoteGet = (noteId) => {
+    var uri = "http://localhost:5000/note/edit";
+
+    uri = uri + "?id=" + noteId; 
+    $.ajax({
+        url: uri,
+        type: "GET",
+        success: (data, status, xhr) => {
+            
+            $("#modalHeader").removeClass()
+            .addClass("modal-header " + getColor(data.color));
+            
+            console.log(data);
+            $("#editTitle").val(data.title);
+            $("#editBody").val(data.body);
+            $("#editPrivate").prop('checked', data.private);
+            console.log($("#editPrivate").prop('checked'));
+        },
+        fail: () => {
+            alert("Connection problem");
+        }
+    })
+} 
+
+const editNotePost = (noteId) => {
+
 }
 
 $(document).ready(() => {
