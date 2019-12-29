@@ -31,6 +31,37 @@ const getPinned = (pinned) => {
     }
 }
 
+const renderElement = (val) => {
+    let element =   "<div class=\"col-sm-4\">" + 
+                        "<div class=\"toast\" data-autohide=\"false\">" +
+                            "<div class=\"toast-header\">" +
+                                "<strong class=\"mr-auto text-primary\">" + val.title + "</strong>" +
+                                "<small class=\"text-muted\">" + val.added + "</small>" + 
+                            "</div>" +
+                            "<div class=\"toast-body" + getColor(val.color) + "\">" +
+                                val.body + 
+                            "</div>" +
+                            "<div class=\"toast-footer\">" +
+                                "<button id=\"pin-" + val.id + "\"" + "type=\"button\" class=\"ml2 mb-1 " + getPinned(val.pinned) + "\"><i class=\"fas fa-map-pin\"></i></button>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>"
+
+    const newElement = jQuery(element).attr('id', "note" + val.id)
+        .dblclick(() => {
+            console.log("TODO edit note with id");
+            console.log($("#note" + val.id).data("note").id);
+            $( "#noteEditDialog" ).modal('show');
+        })
+        .data("note", {id: val.id});
+
+    $("#notesCanvas").append(newElement);
+    $("#pin-" + val.id).on('click', () => {
+        console.log("TODO: pinned");
+        console.log($("#note" + val.id).data("note").id);
+    });
+}
+
 const loadNotes = () => {
     var uri = "http://localhost:5000/note/index";  
     $.ajax({
@@ -39,24 +70,8 @@ const loadNotes = () => {
         success: (data, status, xhr) => {
             // $('.toast').toast('show');
             $.each(data, (index, val) =>{
-                let element =   "<div class=\"col-sm-4\">" + 
-                                    "<div class=\"toast\" data-autohide=\"false\">" +
-                                        "<div class=\"toast-header\">" +
-                                            
-                                            "<strong class=\"mr-auto text-primary\">" + val.title + "</strong>" +
-                                            "<small class=\"text-muted\">" + val.added + "</small>" + 
-                                        "</div>" +
-                                        "<div class=\"toast-body" + getColor(val.color) + "\">" +
-                                            val.body + 
-                                        "</div>" +
-                                        "<div class=\"toast-footer\">" +
-                                            "<button type=\"button\" class=\"ml2 mb-1 " + getPinned(val.pinned) + "\"><i class=\"fas fa-map-pin\"></i></button>" +
+                renderElement(val);
 
-                                        "</div>" +
-
-                                    "</div>" +
-                                "</div>"
-                $("#notesCanvas").append(element);
                 $('.toast').toast('show');
             });
         },
@@ -67,11 +82,7 @@ const loadNotes = () => {
 }
 
 $(document).ready(() => {
-    loadNotes();
-
-
-      
-      
+    loadNotes();   
     // bind event to registration button
     $("#registrationBtn").on('click', () => {
         const username = $("#username").val();
