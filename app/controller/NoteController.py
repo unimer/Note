@@ -78,17 +78,18 @@ def editNote():
         if not form.validate():
             return validationJsonErrorResponse()
         note = Note.query.filter(Note.id == noteId).first()
-        noteOldGroup = adaptor(note.group)
+        # noteOldGroup = adaptor(note.group)
         
-        currentUserId = int(current_user.get_id())
+        currentUserId = 1 # int(current_user.get_id())
         
-        print(noteOldGroup[3], file=sys.stderr)
-        if (currentUserId in noteOldGroup) or (currentUserId == note.userId):
-            note.group = form.group
+        # print(noteOldGroup[3], file=sys.stderr)
+        # if (currentUserId in noteOldGroup) or (currentUserId == note.userId):
+        if (currentUserId == note.userId): 
+            # note.group = form.group
             note.title = form.title
             note.body = form.body
             note.color = form.color
-            note.private = form.private
+            note.private = str2bool(form.private)
             note.changed = datetime.utcnow()
             db.session.commit()
             return json.jsonify(note.forAll())

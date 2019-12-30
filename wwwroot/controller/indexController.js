@@ -24,7 +24,6 @@ const getColor = (color) => {
 }
 
 const getPinned = (pinned) => {
-    console.log(pinned);
     switch (pinned){
         case true:
             return "bg-warning";
@@ -53,6 +52,7 @@ const renderElement = (val) => {
         .dblclick(() => {
             console.log("TODO edit note with id");
             console.log($("#note" + val.id).data("note").id);
+            const noteId = $("#note" + val.id).data("note").id;
             editNoteGet(val.id);
             $( "#noteEditDialog" ).modal('show');
 
@@ -80,6 +80,10 @@ const renderElement = (val) => {
                 $("#modalHeader").removeClass()
                 .addClass("modal-header " + getColor(2));
                 noteEditColor = 2;
+            });
+
+            $("#save-button").on('click', () => {
+                editNotePost(noteId);
             });
         })
         .data("note", {id: val.id});
@@ -126,6 +130,7 @@ const editNoteGet = (noteId) => {
             $("#editTitle").val(data.title);
             $("#editBody").val(data.body);
             $("#editPrivate").prop('checked', data.private);
+            noteEditColor = data.color
             console.log($("#editPrivate").prop('checked'));
         },
         fail: () => {
@@ -135,7 +140,32 @@ const editNoteGet = (noteId) => {
 } 
 
 const editNotePost = (noteId) => {
+    var uri = "http://localhost:5000/note/edit";
 
+    uri = uri + "?id=" + noteId;
+
+    const title = $("#editTitle").val();
+    const body = $("#editBody").val();
+    const private = $("#editPrivate").prop('checked');
+    const color = noteEditColor;
+
+    $.ajax({
+        url: uri,
+        type: "POST",
+        data: {
+            title: title,
+            body: body,
+            private: private,
+            color: color
+        },
+        dataType: "json",
+        success: (data, status, xhr) => {
+            console.log(data);
+        },
+        fail: () => {
+            alert("Connection error");
+        }
+    })
 }
 
 $(document).ready(() => {
