@@ -4,13 +4,18 @@ from app.helpers import str2bool, adaptor
 from app.models.main import *
 from app.models.lists import Lists
 from app.models.enum import ColorEnum
-from flask import json, request
+from flask import json, request, render_template
 from flask_login import login_required, current_user
 from app.forms.NoteForm import NoteForm
 from app import messages
 from datetime import datetime
 
 import sys
+
+@app.route("/")
+def index():
+    return render_template('index.html')
+
 
 # CREATE
 @app.route("/note/add", methods=['GET', 'POST'])
@@ -19,20 +24,22 @@ def addNote():
         note = Note()
         return json.jsonify(note.forAll())
     elif request.method == 'POST':
-        form = NoteForm(request.args)
+        form = NoteForm(request.form)
         if (not form.validateNew()):
             return validationJsonErrorResponse()
        
         user = User.query.filter(User.id == current_user.get_id()).first()
 
+        print(form.title, file=sys.stderr)
         note = Note()
         note.title = form.title
         note.body = form.body
         note.userId = user.id
         note.organizationId = user.organization
         note.group = form.group
-        note.private = form.private
+        note.private = str2bool(form.private)
         note.color = form.color
+
 
         db.session.add(note)
         db.session.commit()
