@@ -20,7 +20,6 @@ def addNote():
         return json.jsonify(note.forAll())
     elif request.method == 'POST':
         form = NoteForm(request.args)
-        # print(current_user, file=sys.stderr)
         if (not form.validateNew()):
             return validationJsonErrorResponse()
        
@@ -45,7 +44,9 @@ def pin():
     noteId = request.args.get('id')
 
     pin = str2bool(request.args.get('pin')) if request.args.get('pin')  else False #ternary operator
-    print(pin, file=sys.stderr)
+
+    print(current_user, file=sys.stderr)
+
     note = Note.query.filter(Note.id == noteId).first()
     
     note.pinned = pin
@@ -80,7 +81,7 @@ def editNote():
         note = Note.query.filter(Note.id == noteId).first()
         # noteOldGroup = adaptor(note.group)
         
-        currentUserId = 1 # int(current_user.get_id())
+        currentUserId = int(current_user.get_id())
         
         # print(noteOldGroup[3], file=sys.stderr)
         # if (currentUserId in noteOldGroup) or (currentUserId == note.userId):
@@ -110,6 +111,7 @@ def getColors():
 
 # Filter
 @app.route("/note/index", methods=['GET'])
+
 def noteIndex():
     username = request.args.get('username')
     organization = request.args.get('organization')

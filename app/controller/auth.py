@@ -21,9 +21,11 @@ def login():
             return json.jsonify(success="false", message="nonExistingUser")
         if not user.check_password_hash(form.password):
             return json.jsonify(success="false", message="wrongPassword")
-        print ("key key", file=sys.stderr)
-        login_user(user)
-        # print(current_user.get_id(), file=sys.stderr)
+        # login_user(user)
+        print (login_user(user, remember=True), file=sys.stderr)
+        print (current_user.get_id(), file=sys.stderr)
+
+
         
         return json.jsonify(success=True, message="successfull login")
     return json.jsonify(success=False, message="formDataError")

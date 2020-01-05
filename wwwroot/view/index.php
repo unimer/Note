@@ -8,6 +8,9 @@
     </div>
 </div>
 
+
+<?php require "login.php"; ?>
+
 <!-- NOTES CONTAINER -->
 
 <div  class="container">

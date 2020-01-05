@@ -4,5 +4,6 @@ flask-sqlalchemy
 flask-migrate
 flask_login
 flask_httpauth
-
+flask_session
+flask_cors
 pymysql

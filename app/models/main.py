@@ -2,10 +2,16 @@ from app import db, login
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+import sys
 
 @login.user_loader
 def load_user(id):
-    return User.query.get(int(id))
+    user = User.query.get(int(id))
+    print("helloUser", file=sys.stderr)
+    print(user, file=sys.stderr)
+    return user
+
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'

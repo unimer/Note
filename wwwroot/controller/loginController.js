@@ -5,7 +5,7 @@ $(document).ready(function () {
         var username = $("#username").val();
         var password = $("#password").val();
 
-        var uri = "http://localhost:5000/login"    
+        var uri = "http://127.0.0.1:5000/login"    
 
         var data = null;
 
@@ -22,7 +22,9 @@ $(document).ready(function () {
             success: (msg, status, xhr) => {
                 data = msg;
                 if (data.success === true) {
-                    window.location.href = './index.php';
+                    $("#loginDialog").modal('hide');
+                    $.session.set("username", username);
+                    $.session.set("password", password);
                 } else {
                     $("#errorMessage").show();
                 }

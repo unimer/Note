@@ -39,7 +39,7 @@ const renderElement = (val) => {
                                 "<strong class=\"mr-auto text-primary\">" + val.title + "</strong>" +
                                 "<small class=\"text-muted\">" + val.added + "</small>" + 
                             "</div>" +
-                            "<div class=\"toast-body" + getColor(val.color) + "\">" +
+                            "<div class=\"toast-body " + getColor(val.color) + "\">" +
                                 val.body + 
                             "</div>" +
                             "<div class=\"toast-footer\">" +
@@ -96,7 +96,7 @@ const renderElement = (val) => {
 }
 
 const loadNotes = () => {
-    var uri = "http://localhost:5000/note/index";  
+    var uri = "http://127.0.0.1:5000/note/index";  
     $.ajax({
         url: uri,
         type: "GET",
@@ -115,7 +115,7 @@ const loadNotes = () => {
 }
 
 const editNoteGet = (noteId) => {
-    var uri = "http://localhost:5000/note/edit";
+    var uri = "http://127.0.0.1:5000/note/edit";
 
     uri = uri + "?id=" + noteId; 
     $.ajax({
@@ -140,7 +140,7 @@ const editNoteGet = (noteId) => {
 } 
 
 const editNotePost = (noteId) => {
-    var uri = "http://localhost:5000/note/edit";
+    var uri = "http://127.0.0.1:5000/note/edit";
 
     uri = uri + "?id=" + noteId;
 
@@ -152,6 +152,7 @@ const editNotePost = (noteId) => {
     $.ajax({
         url: uri,
         type: "POST",
+     
         data: {
             title: title,
             body: body,
@@ -159,6 +160,9 @@ const editNotePost = (noteId) => {
             color: color
         },
         dataType: "json",
+        beforeSend: (xhr) => {
+            // xhr.setRequestHeader("Authorization", "Basic " + btoa("rooto" + ":" + "temp123"));
+        },
         success: (data, status, xhr) => {
             console.log(data);
         },
@@ -170,6 +174,7 @@ const editNotePost = (noteId) => {
 
 $(document).ready(() => {
     loadNotes();   
+    
     // bind event to registration button
     $("#registrationBtn").on('click', () => {
         const username = $("#username").val();
@@ -178,8 +183,9 @@ $(document).ready(() => {
         const organization = $("#selOrg").val();
         ajaxPost(username, email, password, organization);
     });
-    $("#login").on('click', () => {
-        window.location.href = './login.php';
+    $("#navbarLogin").on('click', () => {
+        // window.location.href = './login.php';
+        $("#loginDialog").modal('show');
     });
 
     

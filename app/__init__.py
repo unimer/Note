@@ -8,15 +8,23 @@ from config import Config
 from flask_login import LoginManager
 from flask_httpauth import HTTPBasicAuth
 from flask_cors import CORS
+from flask_session import Session
 import sys
+
 
 app=Flask(__name__)
 app.config.from_object(Config)
+
+app.secret_key = 'super secret string'  # Change this!
+
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 auth = HTTPBasicAuth(app)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
+
+
 
 messages = {}
 
