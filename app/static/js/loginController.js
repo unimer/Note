@@ -23,6 +23,33 @@ $(document).ready(function () {
                 data = msg;
                 if (data.success === true) {
                     $("#loginDialog").modal('hide');
+                    location.reload();
+                } else {
+                    $("#errorMessage").show();
+                }
+            },
+            fail: () => {
+                alert("Connection error");
+            }
+        });
+    });
+
+    $("#navbarLogout").on('click', function () {
+
+        console.log("logout");
+        var uri = "/logout"    
+
+        var data = null;
+        $.ajax({
+            type: 'GET',
+            url: uri,
+            crossDomain: true,
+
+            dataType: 'json',
+            success: (msg, status, xhr) => {
+                data = msg;
+                if (data.success === true) {
+                    location.reload();
 
                 } else {
                     $("#errorMessage").show();

@@ -115,7 +115,7 @@ const loadNotes = () => {
 }
 
 const editNoteGet = (noteId) => {
-    var uri = "http://127.0.0.1:5000/note/edit";
+    var uri = "/note/edit";
 
     uri = uri + "?id=" + noteId; 
     $.ajax({

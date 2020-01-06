@@ -37,6 +37,9 @@
         
         <!-- Modal body -->
         <div class="modal-body">
+            <div id="noteErrorMessage" style="display:none" class="alert alert-danger alert-dismissible fade show">
+                    
+            </div>
             <div class="form-group">
                 <label for="editTitle">Title:</label>
                 <input id="editTitle" type="text" class="form-control">
@@ -61,12 +64,14 @@
         
         <!-- Modal footer -->
         <div id='editFooter' class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="deleteNoteButton" type="button" class="btn btn-outline-danger float-left" data-dismiss="modal">Delete</button>
+
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
             <button id="save-button" type="button" class="btn btn-success">Save changes</button>
         </div>
 
         <div id='addFooter' class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                 <button id="addButton" type="button" class="btn btn-success">Add</button>
         </div>
     

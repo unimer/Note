@@ -31,7 +31,7 @@ def login():
     return json.jsonify(success=False, message="formDataError")
 
 
-@app.route('/logout', methods=['POST'])
+@app.route('/logout', methods=['GET'])
 def logout():
     logout_user()
-    return json.jsonify(sucess="true", message="trues")
+    return json.jsonify(success=True, message="true")

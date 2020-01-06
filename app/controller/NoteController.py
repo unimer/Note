@@ -9,6 +9,7 @@ from flask_login import login_required, current_user
 from app.forms.NoteForm import NoteForm
 from app import messages
 from datetime import datetime
+from sqlalchemy import and_
 
 import sys
 
@@ -27,6 +28,9 @@ def addNote():
         form = NoteForm(request.form)
         if (not form.validateNew()):
             return validationJsonErrorResponse()
+
+        if (not current_user.is_authenticated):
+            return json.jsonify(success=False, message="unauthorized")
        
         user = User.query.filter(User.id == current_user.get_id()).first()
 
@@ -50,13 +54,13 @@ def addNote():
 def pin():
     noteId = request.args.get('id')
 
-    pin = str2bool(request.args.get('pin')) if request.args.get('pin')  else False #ternary operator
+    # pin = str2bool(request.args.get('pin')) if request.args.get('pin')  else False #ternary operator
 
-    print(current_user, file=sys.stderr)
+    # print(current_user, file=sys.stderr)
 
     note = Note.query.filter(Note.id == noteId).first()
     
-    note.pinned = pin
+    note.pinned = not note.pinned
     db.session.commit() 
     return json.jsonify(note.forAll()) 
 
@@ -127,7 +131,10 @@ def noteIndex():
     body = request.args.get('body')
     dateAdded = request.args.get('dateAdded')
 
-    notes = Note.query.all()
+    if current_user.is_authenticated:
+        notes = Note.query.filter(Note.deleted == False)
+    else:
+        notes = Note.query.filter(and_(Note.deleted == False ,Note.private == False))
 
     if username:
         user = User.query.filter(User.username == username).first()
@@ -138,20 +145,20 @@ def noteIndex():
             notes = {}  
 
     if organization: # It will get organization id via combobox
-        notes = filter(lambda item: item.organizationId == int(organization), notes)
+        notes = filter(lambda item: item.organizationId == int(organization) or item.pinned == True, notes)
 
     if dateAdded:
-        notes = filter(lambda item: item.added == dateAdded, notes)
+        notes = filter(lambda item: item.added == dateAdded or item.pinned == True, notes)
 
     if body:
-        notes = filter(lambda item: item.body.find(body) >= 0, notes)
+        notes = filter(lambda item: item.body.find(body) >= 0 or item.pinned == True, notes)
     
     if title:
-        notes = filter(lambda item: item.title.find(title) >= 0, notes)
+        notes = filter(lambda item: item.title.find(title) >= 0 or item.pinned == True, notes)
 
     
     if color:
-        notes = filter(lambda item: item.color == int(color), notes)
+        notes = filter(lambda item: item.color == int(color) or item.pinned == True, notes)
 
 
 

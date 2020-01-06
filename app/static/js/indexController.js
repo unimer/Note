@@ -32,6 +32,43 @@ const getPinned = (pinned) => {
     }
 }
 
+const pinNote = (noteId) => {
+    const uri = "note/pin";
+
+    $.ajax({
+        url: uri + "?id=" + noteId,
+        type: "GET",
+        success: (data, status, xhr) => {
+            if (!data.errorMessages){
+                $("#noteEditDialog").modal('hide');
+                $("#notesCanvas").empty();
+                loadNotes();
+            }
+        },
+        fail: () => {
+            alert("Connection problem");
+        }
+    });
+}
+
+const deleteNote = (noteId) => {
+    const uri = "note/delete";
+    $.ajax({
+        url: uri + "?id=" + noteId,
+        type: "GET",
+        success: (data, status, xhr) => {
+            if (!data.errorMessages){
+                $("#noteEditDialog").modal('hide');
+                $("#notesCanvas").empty();
+                loadNotes();
+            }
+        },
+        fail: () => {
+            alert("Connection problem");
+        }
+    });
+}
+
 const renderElement = (val) => {
     let element =   "<div class=\"col-sm-4\">" + 
                         "<div class=\"toast\" data-autohide=\"false\">" +
@@ -44,6 +81,7 @@ const renderElement = (val) => {
                             "</div>" +
                             "<div class=\"toast-footer\">" +
                                 "<button id=\"pin-" + val.id + "\"" + "type=\"button\" class=\"ml2 mb-1 " + getPinned(val.pinned) + "\"><i class=\"fas fa-map-pin\"></i></button>" +
+                                "<small class=\"text-muted float-right\">" + val.organizationId + "</small>" + 
                             "</div>" +
                         "</div>" +
                     "</div>"
@@ -63,13 +101,18 @@ const renderElement = (val) => {
             $("#save-button").on('click', () => {
                 editNotePost(noteId);
             });
+
+                // delete note 
+            $("#deleteNoteButton").on('click', () => {
+                deleteNote(noteId);
+            });
         })
         .data("note", {id: val.id});
-
     $("#notesCanvas").append(newElement);
+
     $("#pin-" + val.id).on('click', () => {
-        console.log("TODO: pinned");
-        console.log($("#note" + val.id).data("note").id);
+        pinNote($("#note" + val.id).data("note").id)
+        // console.log($("#note" + val.id).data("note").id);
     });
 }
 
@@ -147,6 +190,8 @@ const editNotePost = (noteId) => {
         success: (data, status, xhr) => {
             if (!data.errorMessages){
                 $("#noteEditDialog").modal('hide');
+                $("#notesCanvas").empty();
+                loadNotes();
             }
         },
         fail: () => {
@@ -177,9 +222,17 @@ const addNotePost = (noteId) => {
             // xhr.setRequestHeader("Authorization", "Basic " + btoa("rooto" + ":" + "temp123"));
         },
         success: (data, status, xhr) => {
-            if (data.errorMessages === undefined){
+            if (data.success == false && data.message == "unauthorized"){
+                $("#noteErrorMessage").append("<strong>Unauthorized!</strong>").show();
+            }
+            else if (data.errorMessages === undefined) {
                 $("#noteEditDialog").modal('hide');
+                $("#notesCanvas").empty();
+                loadNotes();
             } else {
+                $.each(data.errorMessages, (i, v) => {
+                    $("#noteErrorMessage").append("<strong>" + v + "</strong>").show();
+                })
                 console.log("errorMessages")
             }
         },
@@ -214,6 +267,8 @@ $(document).ready(() => {
         })
 
     });
+
+
 
     // color buttons
     $("#warning-color").on('click', () => {

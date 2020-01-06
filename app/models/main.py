@@ -71,7 +71,7 @@ class Note(db.Model):
             'added': self.added,
             'changed': self.changed,
             'userId': self.userId,
-            'organizationId': self.organizationId,
+            'organizationId': Organization.query.filter_by(id = self.organizationId).first().name,
             'group': self.group,
             'deleted': self.deleted,
             'private': self.private,
