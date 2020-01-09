@@ -8,7 +8,6 @@ from config import Config
 from flask_login import LoginManager
 from flask_httpauth import HTTPBasicAuth
 from flask_cors import CORS
-from flask_session import Session
 import sys
 
 
