@@ -48,9 +48,10 @@
     <ul class="navbar-nav mr-auto">
 
     </ul>
-    <form class="form-inline my-2 my-lg-0">
+    <form class="my-2 my-lg-0">
         {% if current_user.is_anonymous %}
           <button class="btn btn-outline-light my-2 my-sm-0" type="button" id="navbarLogin">Login</button>
+          <button type="button" class="btn btn-warning" id="openRegistration">Registration</button>
         {% else %}
           <button class="btn btn-outline-light my-2 my-sm-0" type="button" id="navbarLogout">Logout</button>
         {% endif %}

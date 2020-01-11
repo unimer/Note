@@ -62,8 +62,3 @@ $(document).ready(function () {
     });
 });
 
-$(document).ready(() => {
-    $('#registrationBtn').on('click', () => {
-        window.location.href = './registration.php'
-    });
-});

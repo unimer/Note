@@ -11,3 +11,6 @@ class Config(object):
     # Flask-Session
     SESSION_TYPE = 'redis'
     SESSION_REDIS = redis.from_url('redis://127.0.0.1:5000')
+
+    #FLASK ENV
+    FLASK_DEBUG=True

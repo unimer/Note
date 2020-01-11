@@ -41,7 +41,6 @@ const pinNote = (noteId) => {
         success: (data, status, xhr) => {
             if (!data.errorMessages){
                 $("#noteEditDialog").modal('hide');
-                $("#notesCanvas").empty();
                 loadNotes();
             }
         },
@@ -59,7 +58,6 @@ const deleteNote = (noteId) => {
         success: (data, status, xhr) => {
             if (!data.errorMessages){
                 $("#noteEditDialog").modal('hide');
-                $("#notesCanvas").empty();
                 loadNotes();
             }
         },
@@ -118,15 +116,15 @@ const renderElement = (val) => {
 
 const loadNotes = () => {
     var uri = "/note/index";  
-
     $.ajax({
         url: uri,
         type: "GET",
         success: (data, status, xhr) => {
             // $('.toast').toast('show');
+            $("#notesCanvas").empty();
             $.each(data, (index, val) =>{
                 renderElement(val);
-
+                
                 $('.toast').toast('show');
             });
         },
@@ -190,13 +188,14 @@ const editNotePost = (noteId) => {
         success: (data, status, xhr) => {
             if (!data.errorMessages){
                 $("#noteEditDialog").modal('hide');
-                $("#notesCanvas").empty();
                 loadNotes();
             }
         },
         fail: () => {
             alert("Connection error");
         }
+    }).done(() => {
+        loadNotes();
     })
 }
 
@@ -227,7 +226,6 @@ const addNotePost = (noteId) => {
             }
             else if (data.errorMessages === undefined) {
                 $("#noteEditDialog").modal('hide');
-                $("#notesCanvas").empty();
                 loadNotes();
             } else {
                 $.each(data.errorMessages, (i, v) => {
@@ -246,13 +244,20 @@ $(document).ready(() => {
     loadNotes();   
     
     // bind event to registration button
-    $("#registrationBtn").on('click', () => {
-        const username = $("#username").val();
-        const email = $("#email").val();
-        const password = $("#password").val();
-        const organization = $("#selOrg").val();
-        ajaxPost(username, email, password, organization);
+    // $("#registrationBtn").on('click', () => {
+    //     const username = $("#username").val();
+    //     const email = $("#email").val();
+    //     const password = $("#password").val();
+    //     const organization = $("#selOrg").val();
+    //     // ajaxPost(username, email, password, organization);
+    // });
+    
+    $("#openRegistration").on('click', () => {
+        $("#loginDialog").modal('hide');
+        $("#registrationDialog").modal('show');
+
     });
+
     $("#navbarLogin").on('click', () => {
         // window.location.href = './login.php';
         $("#loginDialog").modal('show');

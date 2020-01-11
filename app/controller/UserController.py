@@ -34,6 +34,9 @@ def add():
         return json.jsonify(user.forAll())
     elif request.method == 'POST':
         form = UserForm(request.form)
+        print(form.username, file=sys.stderr)
+        print(form.email, file=sys.stderr)
+
         if not form.validateNew():
             return validationJsonErrorResponse()        
         user = User()
