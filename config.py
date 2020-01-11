@@ -1,5 +1,4 @@
 import os
-import redis
 from os import environ
 
 class Config(object):
@@ -7,10 +6,6 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev'
 
-
-    # Flask-Session
-    SESSION_TYPE = 'redis'
-    SESSION_REDIS = redis.from_url('redis://127.0.0.1:5000')
 
     #FLASK ENV
     FLASK_DEBUG=True
